@@ -96,6 +96,10 @@ class _ProductsDetailsState extends State<ProductsDetails> {
                                 activeDotColor: Colors.indigo,
                                 dotColor: Colors.grey,
                               ),
+                              onEnd: ()
+                              {
+                                current = 0;
+                              },
                             ),
                           ],
                         ),
