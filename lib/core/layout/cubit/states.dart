@@ -1,4 +1,5 @@
 import 'package:shop_now/features/home/domain/entities/categories.dart';
+import 'package:shop_now/features/home/domain/entities/categories_details.dart';
 import 'package:shop_now/features/home/domain/entities/home.dart';
 
 abstract class HomeStates {}
@@ -35,15 +36,31 @@ class GetProductsDetailsErrorState extends HomeStates
   GetProductsDetailsErrorState(this.message);
 }
 
-class GetCategoriesSuccessLoading extends HomeStates
+class GetCategoriesSuccessState extends HomeStates
 {
   final DataCategories dataCategories;
 
-  GetCategoriesSuccessLoading(this.dataCategories);
+  GetCategoriesSuccessState(this.dataCategories);
 }
-class GetCategoriesErrorLoading extends HomeStates
+class GetCategoriesErrorState extends HomeStates
 {
   final String error;
 
-  GetCategoriesErrorLoading(this.error);
+  GetCategoriesErrorState(this.error);
+}
+
+
+class GetCategoriesDetailsLoadingState extends HomeStates{}
+
+class GetCategoriesDetailsSuccessState extends HomeStates
+{
+  final CategoriesDataDetails categoriesDataDetails;
+
+  GetCategoriesDetailsSuccessState(this.categoriesDataDetails);
+}
+class GetCategoriesDetailsErrorState extends HomeStates
+{
+  final String error;
+
+  GetCategoriesDetailsErrorState(this.error);
 }

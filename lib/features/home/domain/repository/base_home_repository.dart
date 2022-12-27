@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shop_now/core/error/failure.dart';
 import 'package:shop_now/features/home/domain/entities/categories.dart';
+import 'package:shop_now/features/home/domain/entities/categories_details.dart';
 import 'package:shop_now/features/home/domain/entities/home.dart';
 
 abstract class BaseHomeRepository {
@@ -10,6 +11,8 @@ abstract class BaseHomeRepository {
   Future<Either<Failure, List<Products>>> getProductsDetails(ProductsDetails productsDetails);
 
   Future<Either<Failure,DataCategories>>getCategories();
+
+  Future<Either<Failure,CategoriesDataDetails>>getCategoriesDetails(ProductsDetails productsDetails);
 }
 
 class ProductsDetails extends Equatable {

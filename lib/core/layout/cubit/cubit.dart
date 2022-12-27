@@ -6,8 +6,10 @@ import 'package:shop_now/core/usecase/base_user_case.dart';
 import 'package:shop_now/features/categories/presentation/screens/categories.dart';
 import 'package:shop_now/features/favorites/presentation/screens/favorites.dart';
 import 'package:shop_now/features/home/domain/entities/categories.dart';
+import 'package:shop_now/features/home/domain/entities/categories_details.dart';
 import 'package:shop_now/features/home/domain/entities/home.dart';
 import 'package:shop_now/features/home/domain/repository/base_home_repository.dart';
+import 'package:shop_now/features/home/domain/usecase/get_categories_details_use_case.dart';
 import 'package:shop_now/features/home/domain/usecase/get_categories_use_case.dart';
 import 'package:shop_now/features/home/domain/usecase/get_home_use_case.dart';
 import 'package:shop_now/features/home/domain/usecase/get_products_details_use_case.dart';
@@ -19,6 +21,7 @@ class HomeCubit extends Cubit<HomeStates> {
     this.getHomeUseCase,
     this.getProductsDetailsUseCase,
     this.getCategoriesUseCase,
+    this.getCategoriesDetailsUseCase,
   ) : super(InitialHomeState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
@@ -69,9 +72,11 @@ class HomeCubit extends Cubit<HomeStates> {
   final GetHomeUseCase getHomeUseCase;
   final GetProductsDetailsUseCase getProductsDetailsUseCase;
   final GetCategoriesUseCase getCategoriesUseCase;
+  final GetCategoriesDetailsUseCase getCategoriesDetailsUseCase;
   Home? home;
   List<Products> products = [];
   DataCategories? dataCategories;
+  CategoriesDataDetails? categoriesDataDetails;
 
   void changeBottomNav(int index) {
     currentIndex = index;
@@ -114,13 +119,29 @@ class HomeCubit extends Cubit<HomeStates> {
 
   void getCategories() async {
     final result = await getCategoriesUseCase(const NoParameters());
-    debugPrint('Categorieeeeees: $result');
+    debugPrint(result.toString());
 
     result.fold(
-      (l) => emit(GetCategoriesErrorLoading(l.message)),
+      (l) => emit(GetCategoriesErrorState(l.message)),
       (r) {
         dataCategories = r;
-        emit(GetCategoriesSuccessLoading(r));
+        emit(GetCategoriesSuccessState(r));
+      },
+    );
+  }
+
+  void getCategoriesDetails(int productsId) async {
+    emit(GetCategoriesDetailsLoadingState());
+    final result = await getCategoriesDetailsUseCase(
+      ProductsDetails(id: productsId),
+    );
+    debugPrint('Details: $result');
+
+    result.fold(
+      (l) => emit(GetCategoriesDetailsErrorState(l.message)),
+      (r) {
+        categoriesDataDetails = r;
+        emit(GetCategoriesDetailsSuccessState(r));
       },
     );
   }
