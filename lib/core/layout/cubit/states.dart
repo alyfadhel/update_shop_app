@@ -1,3 +1,4 @@
+import 'package:shop_now/features/home/domain/entities/categories.dart';
 import 'package:shop_now/features/home/domain/entities/home.dart';
 
 abstract class HomeStates {}
@@ -32,4 +33,17 @@ class GetProductsDetailsErrorState extends HomeStates
   final String message;
 
   GetProductsDetailsErrorState(this.message);
+}
+
+class GetCategoriesSuccessLoading extends HomeStates
+{
+  final DataCategories dataCategories;
+
+  GetCategoriesSuccessLoading(this.dataCategories);
+}
+class GetCategoriesErrorLoading extends HomeStates
+{
+  final String error;
+
+  GetCategoriesErrorLoading(this.error);
 }

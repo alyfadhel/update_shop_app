@@ -5,8 +5,10 @@ import 'package:shop_now/core/layout/cubit/states.dart';
 import 'package:shop_now/core/usecase/base_user_case.dart';
 import 'package:shop_now/features/categories/presentation/screens/categories.dart';
 import 'package:shop_now/features/favorites/presentation/screens/favorites.dart';
+import 'package:shop_now/features/home/domain/entities/categories.dart';
 import 'package:shop_now/features/home/domain/entities/home.dart';
 import 'package:shop_now/features/home/domain/repository/base_home_repository.dart';
+import 'package:shop_now/features/home/domain/usecase/get_categories_use_case.dart';
 import 'package:shop_now/features/home/domain/usecase/get_home_use_case.dart';
 import 'package:shop_now/features/home/domain/usecase/get_products_details_use_case.dart';
 import 'package:shop_now/features/home/presentation/screens/home.dart';
@@ -16,6 +18,7 @@ class HomeCubit extends Cubit<HomeStates> {
   HomeCubit(
     this.getHomeUseCase,
     this.getProductsDetailsUseCase,
+    this.getCategoriesUseCase,
   ) : super(InitialHomeState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
@@ -65,8 +68,10 @@ class HomeCubit extends Cubit<HomeStates> {
 
   final GetHomeUseCase getHomeUseCase;
   final GetProductsDetailsUseCase getProductsDetailsUseCase;
+  final GetCategoriesUseCase getCategoriesUseCase;
   Home? home;
   List<Products> products = [];
+  DataCategories? dataCategories;
 
   void changeBottomNav(int index) {
     currentIndex = index;
@@ -103,6 +108,19 @@ class HomeCubit extends Cubit<HomeStates> {
       (r) {
         products = r;
         emit(GetProductsDetailsSuccessState(r));
+      },
+    );
+  }
+
+  void getCategories() async {
+    final result = await getCategoriesUseCase(const NoParameters());
+    debugPrint('Categorieeeeees: $result');
+
+    result.fold(
+      (l) => emit(GetCategoriesErrorLoading(l.message)),
+      (r) {
+        dataCategories = r;
+        emit(GetCategoriesSuccessLoading(r));
       },
     );
   }
