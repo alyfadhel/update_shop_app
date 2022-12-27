@@ -1,9 +1,5 @@
-import 'package:dio/dio.dart';
-import 'package:shop_now/core/error/exception.dart';
-import 'package:shop_now/core/network/constance.dart';
 import 'package:shop_now/core/network/dio_helper.dart';
 import 'package:shop_now/core/network/end-points.dart';
-import 'package:shop_now/core/network/error_message_model.dart';
 import 'package:shop_now/features/home/data/model/categories.dart';
 import 'package:shop_now/features/home/data/model/home_model.dart';
 import 'package:shop_now/features/home/domain/repository/base_home_repository.dart';
