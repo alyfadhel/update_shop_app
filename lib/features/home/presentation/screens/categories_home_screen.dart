@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_now/core/layout/cubit/cubit.dart';
 import 'package:shop_now/core/layout/cubit/states.dart';
 import 'package:shop_now/core/resources/values_manager.dart';
-import 'package:shop_now/features/home/presentation/widgets/show_categories_screen.dart';
+import 'package:shop_now/features/home/presentation/widgets/show_categories.dart';
 
 class CategoriesHomeScreen extends StatelessWidget {
   const CategoriesHomeScreen({Key? key}) : super(key: key);
