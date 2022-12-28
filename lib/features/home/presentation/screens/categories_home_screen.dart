@@ -20,7 +20,7 @@ class CategoriesHomeScreen extends StatelessWidget {
           height: AppSize.s150,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) => ShowCategoriesScreen(model: cubit.dataCategories!.data[index]),
+            itemBuilder: (context, index) => ShowCategories(model: cubit.dataCategories!.data[index]),
             itemCount: cubit.dataCategories!.data.length,
           ),
         );

@@ -4,10 +4,10 @@ import 'package:shop_now/core/resources/values_manager.dart';
 import 'package:shop_now/features/home/domain/entities/categories.dart';
 import 'package:shop_now/features/home/presentation/screens/categorie_details.dart';
 
-class ShowCategoriesScreen extends StatelessWidget {
+class ShowCategories extends StatelessWidget {
   final DataItem model;
 
-  const ShowCategoriesScreen({Key? key, required this.model}) : super(key: key);
+  const ShowCategories({Key? key, required this.model}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
