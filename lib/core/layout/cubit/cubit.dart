@@ -19,13 +19,11 @@ import 'package:shop_now/features/home/presentation/screens/home.dart';
 import 'package:shop_now/features/settings/presentation/screens/settings.dart';
 
 class HomeCubit extends Cubit<HomeStates> {
-  HomeCubit(
-    this.getHomeUseCase,
-    this.getProductsDetailsUseCase,
-    this.getCategoriesUseCase,
-    this.getCategoriesDetailsUseCase,
-    this.getChangeFavoritesUseCase,
-  ) : super(InitialHomeState());
+  HomeCubit(this.getHomeUseCase,
+      this.getProductsDetailsUseCase,
+      this.getCategoriesUseCase,
+      this.getCategoriesDetailsUseCase,
+      this.getChangeFavoritesUseCase,) : super(InitialHomeState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
 
@@ -98,7 +96,8 @@ class HomeCubit extends Cubit<HomeStates> {
     final result = await getHomeUseCase(const NoParameters());
     debugPrint(result.toString());
     result.fold(
-        (l) => emit(
+            (l) =>
+            emit(
               GetHomeErrorState(
                 l.message,
               ),
@@ -117,18 +116,25 @@ class HomeCubit extends Cubit<HomeStates> {
   }
 
 
-  void changeFavoritesItem(int productId)async
+  void changeFavoritesItem(int productId) async
   {
-    favorites[productId] = !favorites[productId]!;// change icon favorites at this time now
-    final result = await getChangeFavoritesUseCase(ProductsDetails(id: productId),);
+    favorites[productId] = !favorites[productId]!; // change icon favorites at this time now
+    //emit(ChangeFavoritesIcon());
+    final result = await getChangeFavoritesUseCase(
+      ProductsDetails(id: productId),);
     debugPrint(result.toString());
-
     result.fold(
-            (l) => emit(GetChangeFavoritesErrorSuccessState(l.message)),
+            (l) {
+              favorites[productId] = !favorites[productId]!;
+          emit(GetChangeFavoritesErrorSuccessState(l.message));
+        },
             (r) {
-              changeFavorites = r;
-              emit(GetChangeFavoritesSuccessState(r));
-            });
+          changeFavorites = r;
+          if (!changeFavorites!.status) {
+            favorites[productId] = !favorites[productId]!;
+          }
+          emit(GetChangeFavoritesSuccessState(r));
+        });
   }
 
   void getProductsDetails({required int id}) async {
@@ -138,8 +144,8 @@ class HomeCubit extends Cubit<HomeStates> {
     debugPrint(result.toString());
 
     result.fold(
-      (l) => emit(GetProductsDetailsErrorState(l.message)),
-      (r) {
+          (l) => emit(GetProductsDetailsErrorState(l.message)),
+          (r) {
         products = r;
         emit(GetProductsDetailsSuccessState(r));
       },
@@ -151,8 +157,8 @@ class HomeCubit extends Cubit<HomeStates> {
     debugPrint(result.toString());
 
     result.fold(
-      (l) => emit(GetCategoriesErrorState(l.message)),
-      (r) {
+          (l) => emit(GetCategoriesErrorState(l.message)),
+          (r) {
         dataCategories = r;
         emit(GetCategoriesSuccessState(r));
       },
@@ -167,11 +173,12 @@ class HomeCubit extends Cubit<HomeStates> {
     debugPrint('Details: $result');
 
     result.fold(
-      (l) => emit(GetCategoriesDetailsErrorState(l.message)),
-      (r) {
+          (l) => emit(GetCategoriesDetailsErrorState(l.message)),
+          (r) {
         categoriesDataDetails = r;
         emit(GetCategoriesDetailsSuccessState(r));
       },
     );
   }
 }
+//LsoPMudaz5KXcMckB4iYjPePxNVv4GjCItOFw6J7nypbAGvjJmXLe2nJpRfpEFwn5niKiT

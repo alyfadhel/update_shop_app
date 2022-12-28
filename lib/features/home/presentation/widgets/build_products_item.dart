@@ -3,23 +3,43 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_now/core/layout/cubit/cubit.dart';
 import 'package:shop_now/core/layout/cubit/states.dart';
 import 'package:shop_now/core/resources/values_manager.dart';
+import 'package:shop_now/core/utils/widgets/toast_state.dart';
 import 'package:shop_now/features/home/domain/entities/home.dart';
 import 'package:shop_now/features/home/presentation/screens/productsDetails.dart';
 
 class BuildProducts extends StatelessWidget {
   final Products products;
-  const BuildProducts({Key? key,required this.products}) : super(key: key);
+
+  const BuildProducts({Key? key, required this.products}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeCubit,HomeStates>(
+    return BlocConsumer<HomeCubit, HomeStates>(
+      //listenWhen: (previous, current) => products.id != products.id,
       listener: (context, state) {
-
+        if (state is GetChangeFavoritesSuccessState) {
+          if (!state.changeFavorites.status) {
+            showToast(
+              text: state.changeFavorites.message,
+              state: ToastState.error,
+            );
+          } else {
+            showToast(
+              text: state.changeFavorites.message,
+              state: ToastState.success,
+            );
+          }
+        }
       },
       builder: (context, state) {
         return InkWell(
-          onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ProductsDetails(products: products, id: products.id),));
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ProductsDetails(products: products, id: products.id),
+                ));
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,14 +120,18 @@ class BuildProducts extends StatelessWidget {
                           ),
                         const Spacer(),
                         IconButton(
-                          onPressed: ()
-                          {
+                          onPressed: () {
                             debugPrint(products.id.toString());
-                            HomeCubit.get(context).changeFavoritesItem(products.id);
+                            HomeCubit.get(context)
+                                .changeFavoritesItem(products.id);
                           },
                           icon: CircleAvatar(
                             radius: 15.0,
-                            backgroundColor: HomeCubit.get(context).favorites[products.id] == true ? Colors.blue : Colors.grey,
+                            backgroundColor:
+                                HomeCubit.get(context).favorites[products.id] ==
+                                        true
+                                    ? Colors.blue
+                                    : Colors.grey,
                             child: const Icon(
                               Icons.favorite_border,
                               size: 14.0,

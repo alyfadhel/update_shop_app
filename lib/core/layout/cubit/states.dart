@@ -79,3 +79,5 @@ class GetChangeFavoritesErrorSuccessState extends HomeStates
 
   GetChangeFavoritesErrorSuccessState(this.error);
 }
+
+class ChangeFavoritesIcon extends HomeStates{}
