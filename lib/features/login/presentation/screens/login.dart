@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_now/core/layout/home_layout.dart';
-import 'package:shop_now/core/network/constance.dart';
+import 'package:shop_now/core/network/end-points.dart';
 import 'package:shop_now/core/resources/color_manager.dart';
 import 'package:shop_now/core/resources/strings_manager.dart';
 import 'package:shop_now/core/resources/values_manager.dart';
@@ -37,7 +37,7 @@ class LoginScreen extends StatelessWidget {
               ).then((value)
               {
                 if(value){
-                  AppConstance.token = state.login.data!.token;
+                  token = state.login.data!.token;
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(

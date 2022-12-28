@@ -1,5 +1,6 @@
 import 'package:shop_now/core/network/dio_helper.dart';
 import 'package:shop_now/core/network/end-points.dart';
+import 'package:shop_now/features/home/data/model/cahnge_favorites_model.dart';
 import 'package:shop_now/features/home/data/model/categories.dart';
 import 'package:shop_now/features/home/data/model/categories_details_model.dart';
 import 'package:shop_now/features/home/data/model/home_model.dart';
@@ -14,6 +15,9 @@ abstract class BaseHomeRemoteDataSource {
   Future<DataCategoriesModel> getCategories();
 
   Future<CategoriesDataDetailsModel> getCategoriesDetails(
+      ProductsDetails productsDetails);
+
+  Future<ChangeFavoritesModel> getChangeFavorites(
       ProductsDetails productsDetails);
 }
 
@@ -39,6 +43,7 @@ class HomeRemoteDataSource extends BaseHomeRemoteDataSource {
       data: {
         'id': productsDetails.id,
       },
+      Authorization: token,
     );
 
     return List<ProductsModel>.from((response['data']['products'] as List)
@@ -47,7 +52,10 @@ class HomeRemoteDataSource extends BaseHomeRemoteDataSource {
 
   @override
   Future<DataCategoriesModel> getCategories() async {
-    final response = await dioHelper.get(endPoint: categoriesEndPoint);
+    final response = await dioHelper.get(
+      endPoint: categoriesEndPoint,
+      Authorization: token,
+    );
     return DataCategoriesModel.fromJson(response['data']);
   }
 
@@ -59,5 +67,18 @@ class HomeRemoteDataSource extends BaseHomeRemoteDataSource {
       Authorization: token,
     );
     return CategoriesDataDetailsModel.fromJson((response['data']));
+  }
+
+  @override
+  Future<ChangeFavoritesModel> getChangeFavorites(
+      ProductsDetails productsDetails) async {
+    final response = await dioHelper.post(
+      endPoint: changeFavoritesEndPoint,
+      data: {
+        'product_id': productsDetails.id,
+      },
+      Authorization: token,
+    );
+    return ChangeFavoritesModel.fromJson(response);
   }
 }

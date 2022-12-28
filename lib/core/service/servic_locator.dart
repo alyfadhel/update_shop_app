@@ -7,6 +7,7 @@ import 'package:shop_now/features/home/data/repository/home_repository.dart';
 import 'package:shop_now/features/home/domain/repository/base_home_repository.dart';
 import 'package:shop_now/features/home/domain/usecase/get_categories_details_use_case.dart';
 import 'package:shop_now/features/home/domain/usecase/get_categories_use_case.dart';
+import 'package:shop_now/features/home/domain/usecase/get_change_favorites_use_case.dart';
 import 'package:shop_now/features/home/domain/usecase/get_home_use_case.dart';
 import 'package:shop_now/features/home/domain/usecase/get_products_details_use_case.dart';
 import 'package:shop_now/features/login/data/datasource/base_login_remote_data_source.dart';
@@ -25,7 +26,8 @@ final sl = GetIt.instance;
 class ServiceLocator {
   Future<void> init() async {
     // Get Home //
-    sl.registerFactory(() => HomeCubit(sl(),sl(),sl(),sl()));
+    sl.registerFactory(() => HomeCubit(sl(),sl(),sl(),sl(),sl()));
+    sl.registerLazySingleton(() => GetChangeFavoritesUseCase(sl()));
     sl.registerLazySingleton(() => GetCategoriesDetailsUseCase(sl()));
     sl.registerLazySingleton(() => GetCategoriesUseCase(sl()));
     sl.registerLazySingleton(() => GetProductsDetailsUseCase(sl()));

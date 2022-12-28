@@ -7,10 +7,12 @@ import 'package:shop_now/features/categories/presentation/screens/categories.dar
 import 'package:shop_now/features/favorites/presentation/screens/favorites.dart';
 import 'package:shop_now/features/home/domain/entities/categories.dart';
 import 'package:shop_now/features/home/domain/entities/categories_details.dart';
+import 'package:shop_now/features/home/domain/entities/change_favorites.dart';
 import 'package:shop_now/features/home/domain/entities/home.dart';
 import 'package:shop_now/features/home/domain/repository/base_home_repository.dart';
 import 'package:shop_now/features/home/domain/usecase/get_categories_details_use_case.dart';
 import 'package:shop_now/features/home/domain/usecase/get_categories_use_case.dart';
+import 'package:shop_now/features/home/domain/usecase/get_change_favorites_use_case.dart';
 import 'package:shop_now/features/home/domain/usecase/get_home_use_case.dart';
 import 'package:shop_now/features/home/domain/usecase/get_products_details_use_case.dart';
 import 'package:shop_now/features/home/presentation/screens/home.dart';
@@ -22,6 +24,7 @@ class HomeCubit extends Cubit<HomeStates> {
     this.getProductsDetailsUseCase,
     this.getCategoriesUseCase,
     this.getCategoriesDetailsUseCase,
+    this.getChangeFavoritesUseCase,
   ) : super(InitialHomeState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
@@ -73,15 +76,22 @@ class HomeCubit extends Cubit<HomeStates> {
   final GetProductsDetailsUseCase getProductsDetailsUseCase;
   final GetCategoriesUseCase getCategoriesUseCase;
   final GetCategoriesDetailsUseCase getCategoriesDetailsUseCase;
+  final GetChangeFavoritesUseCase getChangeFavoritesUseCase;
   Home? home;
   List<Products> products = [];
   DataCategories? dataCategories;
   CategoriesDataDetails? categoriesDataDetails;
+  ChangeFavorites? changeFavorites;
 
   void changeBottomNav(int index) {
     currentIndex = index;
     emit(ChangeBottomNav());
   }
+
+  //add products into favorites list
+  Map<int, bool> favorites = {};
+
+  // This map for turnover all products to add into favorites
 
   void getHome() async {
     emit(GetHomeLoadingState());
@@ -95,11 +105,30 @@ class HomeCubit extends Cubit<HomeStates> {
             ), (r) {
       home = r;
       emit(
-        GetHomeSuccessState(
-          r,
-        ),
+        GetHomeSuccessState(r),
       );
     });
+    home!.data.products.forEach((element) {
+      favorites.addAll({
+        element.id: element.inFavorites,
+      });
+    });
+    debugPrint(favorites.toString());
+  }
+
+
+  void changeFavoritesItem(int productId)async
+  {
+    favorites[productId] = !favorites[productId]!;// change icon favorites at this time now
+    final result = await getChangeFavoritesUseCase(ProductsDetails(id: productId),);
+    debugPrint(result.toString());
+
+    result.fold(
+            (l) => emit(GetChangeFavoritesErrorSuccessState(l.message)),
+            (r) {
+              changeFavorites = r;
+              emit(GetChangeFavoritesSuccessState(r));
+            });
   }
 
   void getProductsDetails({required int id}) async {

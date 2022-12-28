@@ -102,13 +102,13 @@ class BuildProducts extends StatelessWidget {
                         IconButton(
                           onPressed: ()
                           {
-
-                            //cubit.changeFavorites(products.id);
+                            debugPrint(products.id.toString());
+                            HomeCubit.get(context).changeFavoritesItem(products.id);
                           },
-                          icon: const CircleAvatar(
+                          icon: CircleAvatar(
                             radius: 15.0,
-                           // backgroundColor: cubit.favorites[products.id] == true ? Colors.blue :  Colors.grey,
-                            child: Icon(
+                            backgroundColor: HomeCubit.get(context).favorites[products.id] == true ? Colors.blue : Colors.grey,
+                            child: const Icon(
                               Icons.favorite_border,
                               size: 14.0,
                               color: Colors.white,

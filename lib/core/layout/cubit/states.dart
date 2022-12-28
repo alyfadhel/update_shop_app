@@ -1,5 +1,6 @@
 import 'package:shop_now/features/home/domain/entities/categories.dart';
 import 'package:shop_now/features/home/domain/entities/categories_details.dart';
+import 'package:shop_now/features/home/domain/entities/change_favorites.dart';
 import 'package:shop_now/features/home/domain/entities/home.dart';
 
 abstract class HomeStates {}
@@ -63,4 +64,18 @@ class GetCategoriesDetailsErrorState extends HomeStates
   final String error;
 
   GetCategoriesDetailsErrorState(this.error);
+}
+
+class GetChangeFavoritesSuccessState extends HomeStates
+{
+  final ChangeFavorites changeFavorites;
+
+  GetChangeFavoritesSuccessState(this.changeFavorites);
+}
+
+class GetChangeFavoritesErrorSuccessState extends HomeStates
+{
+  final String error;
+
+  GetChangeFavoritesErrorSuccessState(this.error);
 }

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_now/core/layout/cubit/cubit.dart';
 import 'package:shop_now/core/layout/home_layout.dart';
-import 'package:shop_now/core/network/constance.dart';
+import 'package:shop_now/core/network/end-points.dart';
 import 'package:shop_now/core/observer/observer.dart';
 import 'package:shop_now/core/resources/theme_manager.dart';
 import 'package:shop_now/core/service/servic_locator.dart';
@@ -15,12 +15,13 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await ServiceLocator().init();
   Bloc.observer = MyBlocObserver();
-  AppConstance.token = sl<SharedPreferences>().getString('token');
+  token = sl<SharedPreferences>().getString('token');
+  debugPrint(token);
   bool? onBoarding = sl<SharedPreferences>().getBool('onBoarding');
   debugPrint(onBoarding.toString());
   Widget widget;
   if(onBoarding!=null){
-    if(AppConstance.token!=null){
+    if(token!=null){
       widget = const HomeLayout();
     }else{
       widget = const LoginScreen();
