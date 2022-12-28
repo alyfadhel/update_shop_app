@@ -37,6 +37,11 @@ class BuildProducts extends StatelessWidget {
                       image: NetworkImage(
                         products.image,
                       ),
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Text(
+                          'ooops Error With Image Not Found',
+                        );
+                      },
                     ),
                     if (products.discount != 0)
                       Container(

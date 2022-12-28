@@ -36,6 +36,11 @@ class ShowCategories extends StatelessWidget {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: NetworkImage(model.image.toString()),
+                      onError: (exception, stackTrace) {
+                        const Text(
+                          'ooops Error With Image Not Found',
+                        );
+                      },
                     ),
                   ),
                 ),

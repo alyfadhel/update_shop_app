@@ -33,6 +33,12 @@ class _ShowCategoriesDetailsWidgetsState extends State<ShowCategoriesDetailsWidg
                     width: double.infinity,
                     fit: BoxFit.contain,
                     image: NetworkImage(e),
+                    errorBuilder: (context, error, stackTrace)
+                    {
+                      return const Text(
+                        'ooops Error With Image Not Found',
+                      );
+                    },
                   ),
                 ).toList(),
                 options: CarouselOptions(

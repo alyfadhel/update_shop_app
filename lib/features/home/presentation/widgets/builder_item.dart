@@ -9,6 +9,7 @@ import 'package:shop_now/features/home/presentation/widgets/build_products_item.
 
 class BuilderItem extends StatelessWidget {
   final Home home;
+
   const BuilderItem({Key? key, required this.home}) : super(key: key);
 
   @override
@@ -22,11 +23,16 @@ class BuilderItem extends StatelessWidget {
               items: home.data.banners
                   .map(
                     (e) => Image(
-                  width: double.infinity,
-                  fit: BoxFit.fill,
-                  image: NetworkImage(e.image),
-                ),
-              )
+                      width: double.infinity,
+                      fit: BoxFit.fill,
+                      image: NetworkImage(e.image),
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Text(
+                          'ooops Error With Image Not Found',
+                        );
+                      },
+                    ),
+                  )
                   .toList(),
               options: CarouselOptions(
                 height: 250,
@@ -55,7 +61,7 @@ class BuilderItem extends StatelessWidget {
             childAspectRatio: 1 / 1.8,
             children: List.generate(
               home.data.products.length,
-                  (index) => BuildProducts(products: home.data.products[index]),
+              (index) => BuildProducts(products: home.data.products[index]),
             ),
           ),
         ],

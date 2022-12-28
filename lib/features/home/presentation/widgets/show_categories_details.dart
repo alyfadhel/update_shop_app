@@ -33,6 +33,11 @@ class _ShowCategoriesDetailsState extends State<ShowCategoriesDetails> {
                     width: double.infinity,
                     fit: BoxFit.contain,
                     image: NetworkImage(e),
+                   errorBuilder: (context, error, stackTrace) {
+                    return const Text(
+                       'ooops Error With Image Not Found',
+                     );
+                   },
                   ),
                 ).toList(),
                 options: CarouselOptions(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_now/core/error/failure.dart';
 import 'package:shop_now/core/resources/values_manager.dart';
 import 'package:shop_now/features/categories/presentation/screens/show_categories_details_screen.dart';
 import 'package:shop_now/features/home/domain/entities/categories.dart';
@@ -24,6 +25,11 @@ class CategoriesWidget extends StatelessWidget {
                 image: NetworkImage(
                   model.image.toString(),
                 ),
+                onError: (exception, stackTrace) {
+                   const Text(
+                     'ooops Error With Image Not Found',
+                   );
+                },
               ),
             ),
           ),
