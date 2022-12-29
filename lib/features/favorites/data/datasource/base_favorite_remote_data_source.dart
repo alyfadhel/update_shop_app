@@ -1,9 +1,10 @@
 import 'package:shop_now/core/network/dio_helper.dart';
 import 'package:shop_now/core/network/end-points.dart';
 import 'package:shop_now/features/favorites/data/model/favorites_model.dart';
+import 'package:shop_now/features/favorites/domain/entities/favorites.dart';
 
 abstract class BaseFavoriteRemoteDataSource {
-  Future<FavoritesModel> getFavorites();
+  Future<List<FavoriteDataDetailsModel>> getFavorites();
 }
 
 class FavoriteRemoteDataSource extends BaseFavoriteRemoteDataSource {
@@ -12,11 +13,12 @@ class FavoriteRemoteDataSource extends BaseFavoriteRemoteDataSource {
   FavoriteRemoteDataSource(this.dioHelper);
 
   @override
-  Future<FavoritesModel> getFavorites() async {
+  Future<List<FavoriteDataDetailsModel>> getFavorites() async {
     final response = await dioHelper.get(
       endPoint: favoritesEndPoint,
       Authorization: token,
     );
-    return FavoritesModel.fromJson(response['data']['data']);
+    return List<FavoriteDataDetailsModel>.from((response['data']['data'] as List)
+    .map((e) => FavoriteDataDetailsModel.fromJson(e)));
   }
 }

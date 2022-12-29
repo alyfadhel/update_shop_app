@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_now/core/layout/cubit/states.dart';
 import 'package:shop_now/core/usecase/base_user_case.dart';
 import 'package:shop_now/features/categories/presentation/screens/categories.dart';
+import 'package:shop_now/features/favorites/domain/entities/favorites.dart';
+import 'package:shop_now/features/favorites/domain/usecase/get_favorites_use_case.dart';
 import 'package:shop_now/features/favorites/presentation/screens/favorites.dart';
 import 'package:shop_now/features/home/domain/entities/categories.dart';
 import 'package:shop_now/features/home/domain/entities/categories_details.dart';
@@ -19,11 +21,14 @@ import 'package:shop_now/features/home/presentation/screens/home.dart';
 import 'package:shop_now/features/settings/presentation/screens/settings.dart';
 
 class HomeCubit extends Cubit<HomeStates> {
-  HomeCubit(this.getHomeUseCase,
-      this.getProductsDetailsUseCase,
-      this.getCategoriesUseCase,
-      this.getCategoriesDetailsUseCase,
-      this.getChangeFavoritesUseCase,) : super(InitialHomeState());
+  HomeCubit(
+    this.getHomeUseCase,
+    this.getProductsDetailsUseCase,
+    this.getCategoriesUseCase,
+    this.getCategoriesDetailsUseCase,
+    this.getChangeFavoritesUseCase,
+    this.getFavoritesUseCae,
+  ) : super(InitialHomeState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
 
@@ -75,11 +80,13 @@ class HomeCubit extends Cubit<HomeStates> {
   final GetCategoriesUseCase getCategoriesUseCase;
   final GetCategoriesDetailsUseCase getCategoriesDetailsUseCase;
   final GetChangeFavoritesUseCase getChangeFavoritesUseCase;
+  final GetFavoritesUseCae getFavoritesUseCae;
   Home? home;
   List<Products> products = [];
   DataCategories? dataCategories;
   CategoriesDataDetails? categoriesDataDetails;
   ChangeFavorites? changeFavorites;
+  List<FavoriteDataDetails> model = [];
 
   void changeBottomNav(int index) {
     currentIndex = index;
@@ -96,8 +103,7 @@ class HomeCubit extends Cubit<HomeStates> {
     final result = await getHomeUseCase(const NoParameters());
     debugPrint(result.toString());
     result.fold(
-            (l) =>
-            emit(
+        (l) => emit(
               GetHomeErrorState(
                 l.message,
               ),
@@ -115,26 +121,26 @@ class HomeCubit extends Cubit<HomeStates> {
     debugPrint(favorites.toString());
   }
 
-
-  void changeFavoritesItem(int productId) async
-  {
-    favorites[productId] = !favorites[productId]!; // change icon favorites at this time now
-    //emit(ChangeFavoritesIcon());
+  void changeFavoritesItem(int productId) async {
+    favorites[productId] =
+        !favorites[productId]!; // change icon favorites at this time now
+    emit(ChangeFavoritesIcon());
     final result = await getChangeFavoritesUseCase(
-      ProductsDetails(id: productId),);
+      ProductsDetails(id: productId),
+    );
     debugPrint(result.toString());
-    result.fold(
-            (l) {
-              favorites[productId] = !favorites[productId]!;
-          emit(GetChangeFavoritesErrorSuccessState(l.message));
-        },
-            (r) {
-          changeFavorites = r;
-          if (!changeFavorites!.status) {
-            favorites[productId] = !favorites[productId]!;
-          }
-          emit(GetChangeFavoritesSuccessState(r));
-        });
+    result.fold((l) {
+      favorites[productId] = !favorites[productId]!;
+      emit(GetChangeFavoritesErrorSuccessState(l.message));
+    }, (r) {
+      changeFavorites = r;
+      if (!changeFavorites!.status) {
+        favorites[productId] = !favorites[productId]!;
+      }else{
+        getFavorites();
+      }
+      emit(GetChangeFavoritesSuccessState(r));
+    });
   }
 
   void getProductsDetails({required int id}) async {
@@ -144,8 +150,8 @@ class HomeCubit extends Cubit<HomeStates> {
     debugPrint(result.toString());
 
     result.fold(
-          (l) => emit(GetProductsDetailsErrorState(l.message)),
-          (r) {
+      (l) => emit(GetProductsDetailsErrorState(l.message)),
+      (r) {
         products = r;
         emit(GetProductsDetailsSuccessState(r));
       },
@@ -157,8 +163,8 @@ class HomeCubit extends Cubit<HomeStates> {
     debugPrint(result.toString());
 
     result.fold(
-          (l) => emit(GetCategoriesErrorState(l.message)),
-          (r) {
+      (l) => emit(GetCategoriesErrorState(l.message)),
+      (r) {
         dataCategories = r;
         emit(GetCategoriesSuccessState(r));
       },
@@ -173,10 +179,24 @@ class HomeCubit extends Cubit<HomeStates> {
     debugPrint('Details: $result');
 
     result.fold(
-          (l) => emit(GetCategoriesDetailsErrorState(l.message)),
-          (r) {
+      (l) => emit(GetCategoriesDetailsErrorState(l.message)),
+      (r) {
         categoriesDataDetails = r;
         emit(GetCategoriesDetailsSuccessState(r));
+      },
+    );
+  }
+
+  void getFavorites() async {
+    emit(GetFavoritesLoadingState());
+    final result = await getFavoritesUseCae(const NoParameters());
+    debugPrint('Favorites: $result');
+
+    result.fold(
+      (l) => emit(GetFavoritesErrorState(l.message)),
+      (r) {
+        model = r;
+        emit(GetFavoritesSuccessState(r));
       },
     );
   }

@@ -1,3 +1,4 @@
+import 'package:shop_now/features/favorites/domain/entities/favorites.dart';
 import 'package:shop_now/features/home/domain/entities/categories.dart';
 import 'package:shop_now/features/home/domain/entities/categories_details.dart';
 import 'package:shop_now/features/home/domain/entities/change_favorites.dart';
@@ -81,3 +82,16 @@ class GetChangeFavoritesErrorSuccessState extends HomeStates
 }
 
 class ChangeFavoritesIcon extends HomeStates{}
+
+class GetFavoritesLoadingState extends HomeStates{}
+class GetFavoritesSuccessState extends HomeStates {
+  final List<FavoriteDataDetails> model;
+
+  GetFavoritesSuccessState(this.model);
+}
+class GetFavoritesErrorState extends HomeStates
+{
+  final String error;
+
+  GetFavoritesErrorState(this.error);
+}

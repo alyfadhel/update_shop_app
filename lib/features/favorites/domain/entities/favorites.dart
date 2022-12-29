@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 class Favorites extends Equatable {
-  final bool status;
-  final FavoriteData data;
+  final bool? status;
+  final FavoriteData? data;
 
   const Favorites({
     required this.status,

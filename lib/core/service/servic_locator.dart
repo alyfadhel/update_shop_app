@@ -2,6 +2,10 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_now/core/layout/cubit/cubit.dart';
 import 'package:shop_now/core/network/dio_helper.dart';
+import 'package:shop_now/features/favorites/data/datasource/base_favorite_remote_data_source.dart';
+import 'package:shop_now/features/favorites/data/repository/favorites_repository.dart';
+import 'package:shop_now/features/favorites/domain/repository/base_favorite_repository.dart';
+import 'package:shop_now/features/favorites/domain/usecase/get_favorites_use_case.dart';
 import 'package:shop_now/features/home/data/datasource/base_home_remote_data_source.dart';
 import 'package:shop_now/features/home/data/repository/home_repository.dart';
 import 'package:shop_now/features/home/domain/repository/base_home_repository.dart';
@@ -25,8 +29,14 @@ final sl = GetIt.instance;
 
 class ServiceLocator {
   Future<void> init() async {
+    // Get Favorites//
+    sl.registerLazySingleton(() => GetFavoritesUseCae(sl()));
+    sl.registerLazySingleton<BaseFavoritesRepository>(
+            () => FavoritesRepository(sl()));
+    sl.registerLazySingleton<BaseFavoriteRemoteDataSource>(
+            () => FavoriteRemoteDataSource(sl()));
     // Get Home //
-    sl.registerFactory(() => HomeCubit(sl(),sl(),sl(),sl(),sl()));
+    sl.registerFactory(() => HomeCubit(sl(),sl(),sl(),sl(),sl(),sl()));
     sl.registerLazySingleton(() => GetChangeFavoritesUseCase(sl()));
     sl.registerLazySingleton(() => GetCategoriesDetailsUseCase(sl()));
     sl.registerLazySingleton(() => GetCategoriesUseCase(sl()));

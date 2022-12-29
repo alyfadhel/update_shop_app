@@ -9,7 +9,7 @@ class FavoritesModel extends Favorites {
   factory FavoritesModel.fromJson(Map<String, dynamic> json) {
     return FavoritesModel(
       status: json['status'],
-      data: FavoriteDataModel.fromJson(json['data']),
+      data: json['data']!=null? FavoriteDataModel.fromJson(json['data']): null,
     );
   }
 }
