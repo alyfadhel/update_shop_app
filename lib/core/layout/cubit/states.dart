@@ -129,3 +129,4 @@ class GetUpdateProfileErrorState extends HomeStates
 
   GetUpdateProfileErrorState(this.error);
 }
+

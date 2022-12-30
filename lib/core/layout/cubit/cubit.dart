@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shop_now/core/layout/cubit/states.dart';
+import 'package:shop_now/core/network/end-points.dart';
 import 'package:shop_now/core/usecase/base_user_case.dart';
 import 'package:shop_now/features/categories/presentation/screens/categories.dart';
 import 'package:shop_now/features/favorites/domain/entities/favorites.dart';
@@ -99,9 +100,6 @@ class HomeCubit extends Cubit<HomeStates> {
   ChangeFavorites? changeFavorites;
   List<FavoriteDataDetails> model = [];
   Profile? profile;
-
-  File? profileImage;
-  final picker = ImagePicker();
   var nameController = TextEditingController();
   var emailController = TextEditingController();
   var phoneController = TextEditingController();
@@ -228,21 +226,14 @@ class HomeCubit extends Cubit<HomeStates> {
       (l) => emit(GetProfileErrorState(l.message)),
       (r) {
         profile = r;
+        nameController.clear();
+        phoneController.clear();
+        emailController.clear();
         emit(GetProfileSuccessState(r));
       },
     );
   }
 
-  Future getImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      profileImage = File(pickedFile.path);
-      emit(GetImagePickedSuccessState());
-    } else {
-      print('No image selected.');
-      emit(GetImagePickedErrorState());
-    }
-  }
 
   void getUpdateProfile({
     required String name,
@@ -263,5 +254,7 @@ class HomeCubit extends Cubit<HomeStates> {
       emit(GetUpdateProfileSuccessState(r));
     });
   }
+
+
 }
 //LsoPMudaz5KXcMckB4iYjPePxNVv4GjCItOFw6J7nypbAGvjJmXLe2nJpRfpEFwn5niKiT

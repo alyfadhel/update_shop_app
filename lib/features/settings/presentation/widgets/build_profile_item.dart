@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_now/core/layout/cubit/cubit.dart';
 import 'package:shop_now/core/layout/cubit/states.dart';
+import 'package:shop_now/core/network/end-points.dart';
 import 'package:shop_now/core/resources/color_manager.dart';
 import 'package:shop_now/core/resources/strings_manager.dart';
 import 'package:shop_now/core/resources/values_manager.dart';
@@ -12,6 +13,7 @@ import 'package:shop_now/features/settings/domain/entities/profile.dart';
 
 class BuildProfileItem extends StatelessWidget {
   final Profile profile;
+
 
   const BuildProfileItem({
     Key? key,
@@ -91,6 +93,18 @@ class BuildProfileItem extends StatelessWidget {
                   );
                 },
                 text: 'update',
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  color: ColorManager.sWhite,
+                ),
+              ),
+              const SizedBox(
+                height: AppSize.s20,
+              ),
+              MyButton(
+                onPressedTextButton: () {
+                 Constance().singOut(context);
+                },
+                text: 'logout',
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   color: ColorManager.sWhite,
                 ),

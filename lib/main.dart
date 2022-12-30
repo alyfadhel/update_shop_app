@@ -9,7 +9,6 @@ import 'package:shop_now/core/resources/theme_manager.dart';
 import 'package:shop_now/core/service/service_locator.dart';
 import 'package:shop_now/features/login/presentation/screens/login.dart';
 import 'package:shop_now/features/on_boarding/on_boarding.dart';
-import 'package:shop_now/features/on_boarding/welcome_on_boarding/welcome_on_boarding.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
