@@ -1,11 +1,7 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:shop_now/core/layout/cubit/states.dart';
-import 'package:shop_now/core/network/end-points.dart';
 import 'package:shop_now/core/usecase/base_user_case.dart';
 import 'package:shop_now/features/categories/presentation/screens/categories.dart';
 import 'package:shop_now/features/favorites/domain/entities/favorites.dart';
