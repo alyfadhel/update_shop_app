@@ -25,13 +25,16 @@ class BuildProfileItem extends StatelessWidget {
                   alignment: AlignmentDirectional.bottomEnd,
                   children: [
                     CircleAvatar(
-                      radius: AppSize.s70,
-                      backgroundImage: NetworkImage(
+                      radius: AppSize.s80,
+                      backgroundImage: HomeCubit.get(context).profileImage == null? NetworkImage(
                         profile.data.image.toString(),
-                      ),
+                      ) : FileImage(HomeCubit.get(context).profileImage!) as ImageProvider,
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: ()
+                      {
+                        HomeCubit.get(context).getImage();
+                      },
                       icon: const CircleAvatar(
                         radius: AppSize.s20,
                         child: Icon(

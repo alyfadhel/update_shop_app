@@ -110,3 +110,6 @@ class GetProfileErrorState extends HomeStates
 
   GetProfileErrorState(this.error);
 }
+
+class GetImagePickedSuccessState extends HomeStates{}
+class GetImagePickedErrorState extends HomeStates {}

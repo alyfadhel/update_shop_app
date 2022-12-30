@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shop_now/core/layout/cubit/states.dart';
 import 'package:shop_now/core/usecase/base_user_case.dart';
 import 'package:shop_now/features/categories/presentation/screens/categories.dart';
@@ -92,6 +95,8 @@ class HomeCubit extends Cubit<HomeStates> {
   ChangeFavorites? changeFavorites;
   List<FavoriteDataDetails> model = [];
   Profile? profile;
+  File? profileImage;
+  final picker = ImagePicker();
   var nameController = TextEditingController();
   var emailController = TextEditingController();
   var phoneController = TextEditingController();
@@ -221,5 +226,21 @@ class HomeCubit extends Cubit<HomeStates> {
       },
     );
   }
+
+
+
+  Future getImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      profileImage = File(pickedFile.path);
+      emit(GetImagePickedSuccessState());
+    } else {
+      print('No image selected.');
+      emit(GetImagePickedErrorState());
+    }
+  }
+
+
+
 }
 //LsoPMudaz5KXcMckB4iYjPePxNVv4GjCItOFw6J7nypbAGvjJmXLe2nJpRfpEFwn5niKiT
