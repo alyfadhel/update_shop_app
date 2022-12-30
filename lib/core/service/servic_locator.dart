@@ -24,28 +24,49 @@ import 'package:shop_now/features/register/data/repository/register_repository.d
 import 'package:shop_now/features/register/domain/repository/base_login_repository.dart';
 import 'package:shop_now/features/register/domain/usecase/get_register_use_case.dart';
 import 'package:shop_now/features/register/presentation/controller/cubit/cubit.dart';
+import 'package:shop_now/features/settings/data/datasource/base_profile_remote_data_source.dart';
+import 'package:shop_now/features/settings/data/repository/profile_repository.dart';
+import 'package:shop_now/features/settings/domain/repository/base_profile_repository.dart';
+import 'package:shop_now/features/settings/domain/usecase/get_profile_use_case.dart';
+
 
 final sl = GetIt.instance;
 
 class ServiceLocator {
   Future<void> init() async {
+    sl.registerFactory(
+      () => HomeCubit(
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+        sl(),
+
+      ),
+    );
+    // Get Profile //
+    sl.registerLazySingleton(() => GetProfileUseCase(sl()));
+    sl.registerLazySingleton<BaseProfileRepository>(
+            () => ProfileRepository(sl()));
+    sl.registerLazySingleton<BaseProfileRemoteDataSource>(
+            () => ProfileRemoteDataSource(sl()));
     // Get Favorites//
     sl.registerLazySingleton(() => GetFavoritesUseCae(sl()));
     sl.registerLazySingleton<BaseFavoritesRepository>(
-            () => FavoritesRepository(sl()));
+        () => FavoritesRepository(sl()));
     sl.registerLazySingleton<BaseFavoriteRemoteDataSource>(
-            () => FavoriteRemoteDataSource(sl()));
+        () => FavoriteRemoteDataSource(sl()));
     // Get Home //
-    sl.registerFactory(() => HomeCubit(sl(),sl(),sl(),sl(),sl(),sl()));
     sl.registerLazySingleton(() => GetChangeFavoritesUseCase(sl()));
     sl.registerLazySingleton(() => GetCategoriesDetailsUseCase(sl()));
     sl.registerLazySingleton(() => GetCategoriesUseCase(sl()));
     sl.registerLazySingleton(() => GetProductsDetailsUseCase(sl()));
     sl.registerLazySingleton(() => GetHomeUseCase(sl()));
-    sl.registerLazySingleton<BaseHomeRepository>(
-            () => HomeRepository(sl()));
+    sl.registerLazySingleton<BaseHomeRepository>(() => HomeRepository(sl()));
     sl.registerLazySingleton<BaseHomeRemoteDataSource>(
-            () => HomeRemoteDataSource(sl()));
+        () => HomeRemoteDataSource(sl()));
     // register //
     sl.registerFactory(() => RegisterCubit(sl()));
     sl.registerLazySingleton(() => GetRegisterUseCase(sl()));
@@ -63,7 +84,7 @@ class ServiceLocator {
     //shared preferences //
 
     sl.registerLazySingleton<DioHelper>(
-          () => DioHelperImpl(),
+      () => DioHelperImpl(),
     );
     final sharedPreferences = await SharedPreferences.getInstance();
     sl.registerLazySingleton<SharedPreferences>(

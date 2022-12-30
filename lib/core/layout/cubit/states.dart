@@ -3,6 +3,7 @@ import 'package:shop_now/features/home/domain/entities/categories.dart';
 import 'package:shop_now/features/home/domain/entities/categories_details.dart';
 import 'package:shop_now/features/home/domain/entities/change_favorites.dart';
 import 'package:shop_now/features/home/domain/entities/home.dart';
+import 'package:shop_now/features/settings/domain/entities/profile.dart';
 
 abstract class HomeStates {}
 
@@ -94,4 +95,18 @@ class GetFavoritesErrorState extends HomeStates
   final String error;
 
   GetFavoritesErrorState(this.error);
+}
+
+class GetProfileLoadingState extends HomeStates {}
+class GetProfileSuccessState extends HomeStates
+{
+  final Profile profile;
+
+  GetProfileSuccessState(this.profile);
+}
+class GetProfileErrorState extends HomeStates
+{
+  final String error;
+
+  GetProfileErrorState(this.error);
 }

@@ -18,6 +18,8 @@ import 'package:shop_now/features/home/domain/usecase/get_change_favorites_use_c
 import 'package:shop_now/features/home/domain/usecase/get_home_use_case.dart';
 import 'package:shop_now/features/home/domain/usecase/get_products_details_use_case.dart';
 import 'package:shop_now/features/home/presentation/screens/home.dart';
+import 'package:shop_now/features/settings/domain/entities/profile.dart';
+import 'package:shop_now/features/settings/domain/usecase/get_profile_use_case.dart';
 import 'package:shop_now/features/settings/presentation/screens/settings.dart';
 
 class HomeCubit extends Cubit<HomeStates> {
@@ -28,6 +30,7 @@ class HomeCubit extends Cubit<HomeStates> {
     this.getCategoriesDetailsUseCase,
     this.getChangeFavoritesUseCase,
     this.getFavoritesUseCae,
+    this.getProfileUseCase,
   ) : super(InitialHomeState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
@@ -81,12 +84,17 @@ class HomeCubit extends Cubit<HomeStates> {
   final GetCategoriesDetailsUseCase getCategoriesDetailsUseCase;
   final GetChangeFavoritesUseCase getChangeFavoritesUseCase;
   final GetFavoritesUseCae getFavoritesUseCae;
+  final GetProfileUseCase getProfileUseCase;
   Home? home;
   List<Products> products = [];
   DataCategories? dataCategories;
   CategoriesDataDetails? categoriesDataDetails;
   ChangeFavorites? changeFavorites;
   List<FavoriteDataDetails> model = [];
+  Profile? profile;
+  var nameController = TextEditingController();
+  var emailController = TextEditingController();
+  var phoneController = TextEditingController();
 
   void changeBottomNav(int index) {
     currentIndex = index;
@@ -136,7 +144,7 @@ class HomeCubit extends Cubit<HomeStates> {
       changeFavorites = r;
       if (!changeFavorites!.status) {
         favorites[productId] = !favorites[productId]!;
-      }else{
+      } else {
         getFavorites();
       }
       emit(GetChangeFavoritesSuccessState(r));
@@ -197,6 +205,19 @@ class HomeCubit extends Cubit<HomeStates> {
       (r) {
         model = r;
         emit(GetFavoritesSuccessState(r));
+      },
+    );
+  }
+
+  void getProfile() async {
+    emit(GetProfileLoadingState());
+    final result = await getProfileUseCase(const NoParameters());
+
+    result.fold(
+      (l) => emit(GetProfileErrorState(l.message)),
+      (r) {
+        profile = r;
+        emit(GetProfileSuccessState(r));
       },
     );
   }
