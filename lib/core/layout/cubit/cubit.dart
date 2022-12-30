@@ -24,6 +24,8 @@ import 'package:shop_now/features/home/presentation/screens/home.dart';
 import 'package:shop_now/features/settings/domain/entities/profile.dart';
 import 'package:shop_now/features/settings/domain/usecase/get_profile_use_case.dart';
 import 'package:shop_now/features/settings/presentation/screens/settings.dart';
+import 'package:shop_now/features/update_profile/domain/repository/base_update_profile_repository.dart';
+import 'package:shop_now/features/update_profile/domain/usecase/get_update_profile_use_case.dart';
 
 class HomeCubit extends Cubit<HomeStates> {
   HomeCubit(
@@ -34,6 +36,7 @@ class HomeCubit extends Cubit<HomeStates> {
     this.getChangeFavoritesUseCase,
     this.getFavoritesUseCae,
     this.getProfileUseCase,
+    this.getUpdateProfileUseCase,
   ) : super(InitialHomeState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
@@ -88,6 +91,7 @@ class HomeCubit extends Cubit<HomeStates> {
   final GetChangeFavoritesUseCase getChangeFavoritesUseCase;
   final GetFavoritesUseCae getFavoritesUseCae;
   final GetProfileUseCase getProfileUseCase;
+  final GetUpdateProfileUseCase getUpdateProfileUseCase;
   Home? home;
   List<Products> products = [];
   DataCategories? dataCategories;
@@ -95,11 +99,13 @@ class HomeCubit extends Cubit<HomeStates> {
   ChangeFavorites? changeFavorites;
   List<FavoriteDataDetails> model = [];
   Profile? profile;
+
   File? profileImage;
   final picker = ImagePicker();
   var nameController = TextEditingController();
   var emailController = TextEditingController();
   var phoneController = TextEditingController();
+  var imageController = TextEditingController();
 
   void changeBottomNav(int index) {
     currentIndex = index;
@@ -227,8 +233,6 @@ class HomeCubit extends Cubit<HomeStates> {
     );
   }
 
-
-
   Future getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -240,7 +244,24 @@ class HomeCubit extends Cubit<HomeStates> {
     }
   }
 
+  void getUpdateProfile({
+    required String name,
+    required String email,
+    required String phone,
+  }) async {
+    emit(GetUpdateProfileLoadingState());
+    final result = await getUpdateProfileUseCase(
+      UpdateProfileParameters(
+        name: name,
+        phone: phone,
+        email: email,
+      ),
+    );
 
-
+    result.fold((l) => emit(GetUpdateProfileErrorState(l.message)), (r) {
+      profile = r;
+      emit(GetUpdateProfileSuccessState(r));
+    });
+  }
 }
 //LsoPMudaz5KXcMckB4iYjPePxNVv4GjCItOFw6J7nypbAGvjJmXLe2nJpRfpEFwn5niKiT

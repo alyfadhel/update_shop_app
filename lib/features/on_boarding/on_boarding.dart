@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_now/core/resources/values_manager.dart';
-import 'package:shop_now/core/service/servic_locator.dart';
+import 'package:shop_now/core/service/service_locator.dart';
 import 'package:shop_now/core/utils/widgets/my_textButton.dart';
 import 'package:shop_now/features/login/presentation/screens/login.dart';
 import 'package:shop_now/features/on_boarding/model/on_boarding_model.dart';

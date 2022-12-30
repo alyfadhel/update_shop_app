@@ -28,6 +28,10 @@ import 'package:shop_now/features/settings/data/datasource/base_profile_remote_d
 import 'package:shop_now/features/settings/data/repository/profile_repository.dart';
 import 'package:shop_now/features/settings/domain/repository/base_profile_repository.dart';
 import 'package:shop_now/features/settings/domain/usecase/get_profile_use_case.dart';
+import 'package:shop_now/features/update_profile/data/datasource/base_update_profile_remote_data_source.dart';
+import 'package:shop_now/features/update_profile/data/repository/update_profile_repository.dart';
+import 'package:shop_now/features/update_profile/domain/repository/base_update_profile_repository.dart';
+import 'package:shop_now/features/update_profile/domain/usecase/get_update_profile_use_case.dart';
 
 
 final sl = GetIt.instance;
@@ -43,9 +47,15 @@ class ServiceLocator {
         sl(),
         sl(),
         sl(),
-
+        sl(),
       ),
     );
+    // Update Profile //
+    sl.registerLazySingleton(() => GetUpdateProfileUseCase(sl()));
+    sl.registerLazySingleton<BaseUpdateProfileRepository>(
+            () => UpdateProfileRepository(sl()));
+    sl.registerLazySingleton<BaseUpdateProfileRemoteDataSource>(
+            () => UpdateProfileRemoteDataSource(sl()));
     // Get Profile //
     sl.registerLazySingleton(() => GetProfileUseCase(sl()));
     sl.registerLazySingleton<BaseProfileRepository>(

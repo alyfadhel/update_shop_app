@@ -6,7 +6,7 @@ import 'package:shop_now/core/layout/home_layout.dart';
 import 'package:shop_now/core/network/end-points.dart';
 import 'package:shop_now/core/observer/observer.dart';
 import 'package:shop_now/core/resources/theme_manager.dart';
-import 'package:shop_now/core/service/servic_locator.dart';
+import 'package:shop_now/core/service/service_locator.dart';
 import 'package:shop_now/features/login/presentation/screens/login.dart';
 import 'package:shop_now/features/on_boarding/on_boarding.dart';
 import 'package:shop_now/features/on_boarding/welcome_on_boarding/welcome_on_boarding.dart';

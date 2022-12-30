@@ -113,3 +113,19 @@ class GetProfileErrorState extends HomeStates
 
 class GetImagePickedSuccessState extends HomeStates{}
 class GetImagePickedErrorState extends HomeStates {}
+
+
+class GetUpdateProfileLoadingState extends HomeStates{}
+class GetUpdateProfileSuccessState extends HomeStates
+{
+  final Profile updateProfile;
+
+  GetUpdateProfileSuccessState(this.updateProfile);
+}
+
+class GetUpdateProfileErrorState extends HomeStates
+{
+  final String error;
+
+  GetUpdateProfileErrorState(this.error);
+}

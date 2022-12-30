@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_now/core/resources/color_manager.dart';
 import 'package:shop_now/core/resources/strings_manager.dart';
 import 'package:shop_now/core/resources/values_manager.dart';
-import 'package:shop_now/core/service/servic_locator.dart';
+import 'package:shop_now/core/service/service_locator.dart';
 import 'package:shop_now/core/utils/widgets/my_button.dart';
 import 'package:shop_now/core/utils/widgets/my_form_field.dart';
 import 'package:shop_now/core/utils/widgets/toast_state.dart';

@@ -1,15 +1,22 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_now/core/layout/cubit/cubit.dart';
+import 'package:shop_now/core/layout/cubit/states.dart';
 import 'package:shop_now/core/resources/color_manager.dart';
 import 'package:shop_now/core/resources/strings_manager.dart';
 import 'package:shop_now/core/resources/values_manager.dart';
+import 'package:shop_now/core/utils/widgets/my_button.dart';
 import 'package:shop_now/core/utils/widgets/my_form_field.dart';
 import 'package:shop_now/features/settings/domain/entities/profile.dart';
 
 class BuildProfileItem extends StatelessWidget {
   final Profile profile;
 
-  const BuildProfileItem({Key? key, required this.profile}) : super(key: key);
+  const BuildProfileItem({
+    Key? key,
+    required this.profile,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,40 +27,11 @@ class BuildProfileItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(
-                child: Stack(
-                  alignment: AlignmentDirectional.bottomEnd,
-                  children: [
-                    CircleAvatar(
-                      radius: AppSize.s80,
-                      backgroundImage: HomeCubit.get(context).profileImage == null? NetworkImage(
-                        profile.data.image.toString(),
-                      ) : FileImage(HomeCubit.get(context).profileImage!) as ImageProvider,
-                    ),
-                    IconButton(
-                      onPressed: ()
-                      {
-                        HomeCubit.get(context).getImage();
-                      },
-                      icon: const CircleAvatar(
-                        radius: AppSize.s20,
-                        child: Icon(
-                          Icons.edit,
-                          size: AppSize.s15,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: AppSize.s50,
-              ),
               Text(
                 AppStrings.profile,
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                      color: ColorManager.sBlack,
-                    ),
+                  color: ColorManager.sBlack,
+                ),
               ),
               const SizedBox(
                 height: AppSize.s20,
@@ -99,6 +77,23 @@ class BuildProfileItem extends StatelessWidget {
                   }
                   return null;
                 },
+              ),
+              const SizedBox(
+                height: AppSize.s20,
+              ),
+              MyButton(
+                onPressedTextButton: () {
+                  HomeCubit.get(context).getUpdateProfile(
+                    name: HomeCubit.get(context).nameController.text,
+                    email: HomeCubit.get(context).emailController.text,
+                    phone: HomeCubit.get(context).phoneController.text,
+
+                  );
+                },
+                text: 'update',
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  color: ColorManager.sWhite,
+                ),
               ),
             ],
           ),

@@ -5,7 +5,7 @@ import 'package:shop_now/core/layout/cubit/cubit.dart';
 import 'package:shop_now/core/layout/cubit/states.dart';
 import 'package:shop_now/core/resources/color_manager.dart';
 import 'package:shop_now/core/resources/values_manager.dart';
-import 'package:shop_now/core/service/servic_locator.dart';
+import 'package:shop_now/core/service/service_locator.dart';
 import 'package:shop_now/features/categories/presentation/widgets/show_categories_details_widget.dart';
 
 class ShowCategoriesDetailsScreen extends StatelessWidget {

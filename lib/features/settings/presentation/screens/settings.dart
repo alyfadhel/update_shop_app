@@ -21,8 +21,10 @@ class SettingsScreen extends StatelessWidget {
         cubit.emailController.text = cubit.profile!.data.email;
         cubit.phoneController.text = cubit.profile!.data.phone;
         return ConditionalBuilder(
-          condition: cubit.profile != null,
-          builder: (context) => BuildProfileItem(profile: cubit.profile!),
+          condition: cubit.profile != null && true,
+          builder: (context) => BuildProfileItem(
+              profile: cubit.profile!,
+          ),
           fallback: (context) => const Center(
             child: CircularProgressIndicator(),
           ),
