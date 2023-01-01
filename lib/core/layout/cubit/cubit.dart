@@ -18,6 +18,8 @@ import 'package:shop_now/features/home/domain/usecase/get_change_favorites_use_c
 import 'package:shop_now/features/home/domain/usecase/get_home_use_case.dart';
 import 'package:shop_now/features/home/domain/usecase/get_products_details_use_case.dart';
 import 'package:shop_now/features/home/presentation/screens/home.dart';
+import 'package:shop_now/features/notification/domain/entities/notification.dart';
+import 'package:shop_now/features/notification/domain/usecase/get_notification_use_case.dart';
 import 'package:shop_now/features/settings/domain/entities/profile.dart';
 import 'package:shop_now/features/settings/domain/usecase/get_profile_use_case.dart';
 import 'package:shop_now/features/settings/presentation/screens/settings.dart';
@@ -34,6 +36,7 @@ class HomeCubit extends Cubit<HomeStates> {
     this.getFavoritesUseCae,
     this.getProfileUseCase,
     this.getUpdateProfileUseCase,
+      this.getNotificationUseCase,
   ) : super(InitialHomeState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
@@ -89,6 +92,7 @@ class HomeCubit extends Cubit<HomeStates> {
   final GetFavoritesUseCae getFavoritesUseCae;
   final GetProfileUseCase getProfileUseCase;
   final GetUpdateProfileUseCase getUpdateProfileUseCase;
+  final GetNotificationUseCase getNotificationUseCase;
   Home? home;
   List<Products> products = [];
   DataCategories? dataCategories;
@@ -96,6 +100,7 @@ class HomeCubit extends Cubit<HomeStates> {
   ChangeFavorites? changeFavorites;
   List<FavoriteDataDetails> model = [];
   Profile? profile;
+  NotificationMsg? notificationMsg;
   var nameController = TextEditingController();
   var emailController = TextEditingController();
   var phoneController = TextEditingController();
@@ -249,6 +254,23 @@ class HomeCubit extends Cubit<HomeStates> {
       profile = r;
       emit(GetUpdateProfileSuccessState(r));
     });
+  }
+
+  void getNotification()async
+  {
+    emit(GetNotificationLoadingState());
+    final result = await getNotificationUseCase(const NoParameters());
+
+    debugPrint('Notification: $result');
+
+    result.fold(
+            (l) => emit(GetNotificationErrorState(l.message)),
+            (r) {
+              notificationMsg = r;
+              emit(GetNotificationSuccessState(r));
+            },
+    );
+
   }
 
 

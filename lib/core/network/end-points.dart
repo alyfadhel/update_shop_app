@@ -19,6 +19,7 @@ const String searchEndPoint = '/products/search';
 const String changeFavoritesEndPoint = '/favorites';
 const String favoritesEndPoint = '/favorites';
 const String logoutEndPoint = '/logout';
+const String notificationsEndPoint = '/notifications';
 String categoriesDetailsEndPoint(int categoriesId)=> '/categories/$categoriesId';
 
 String productsDetailsEndPoint(int productsId)=>'/products/$productsId';

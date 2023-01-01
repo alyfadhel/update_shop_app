@@ -3,6 +3,7 @@ import 'package:shop_now/features/home/domain/entities/categories.dart';
 import 'package:shop_now/features/home/domain/entities/categories_details.dart';
 import 'package:shop_now/features/home/domain/entities/change_favorites.dart';
 import 'package:shop_now/features/home/domain/entities/home.dart';
+import 'package:shop_now/features/notification/domain/entities/notification.dart';
 import 'package:shop_now/features/settings/domain/entities/profile.dart';
 
 abstract class HomeStates {}
@@ -130,3 +131,17 @@ class GetUpdateProfileErrorState extends HomeStates
   GetUpdateProfileErrorState(this.error);
 }
 
+class GetNotificationLoadingState extends HomeStates{}
+
+class GetNotificationSuccessState extends HomeStates
+{
+  final NotificationMsg notification;
+
+  GetNotificationSuccessState(this.notification);
+}
+class GetNotificationErrorState extends HomeStates
+{
+  final String error;
+
+  GetNotificationErrorState(this.error);
+}

@@ -19,6 +19,10 @@ import 'package:shop_now/features/login/data/repository/login_repository.dart';
 import 'package:shop_now/features/login/domain/repository/base_login_repostiory.dart';
 import 'package:shop_now/features/login/domain/usecase/get_login_user_use_case.dart';
 import 'package:shop_now/features/login/presentation/controller/cubit/cubit.dart';
+import 'package:shop_now/features/notification/data/datasource/base_notification_remote_data_source.dart';
+import 'package:shop_now/features/notification/data/repository/notification_repository.dart';
+import 'package:shop_now/features/notification/domain/repository/base_notification_repository.dart';
+import 'package:shop_now/features/notification/domain/usecase/get_notification_use_case.dart';
 import 'package:shop_now/features/register/data/datasource/base_register_remote_data_source.dart';
 import 'package:shop_now/features/register/data/repository/register_repository.dart';
 import 'package:shop_now/features/register/domain/repository/base_login_repository.dart';
@@ -48,8 +52,15 @@ class ServiceLocator {
         sl(),
         sl(),
         sl(),
+        sl(),
       ),
     );
+    // Notification //
+    sl.registerLazySingleton(() => GetNotificationUseCase(sl()));
+    sl.registerLazySingleton<BaseNotificationRepository>(
+            () => NotificationRepository(sl()));
+    sl.registerLazySingleton<BaseNotificationRemoteDataSource>(
+            () => NotificationRemoteDataSource(sl()));
     // Update Profile //
     sl.registerLazySingleton(() => GetUpdateProfileUseCase(sl()));
     sl.registerLazySingleton<BaseUpdateProfileRepository>(
